@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HackPath Academy</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="top-bar">
+      <div class="logo">
+        <span>HackPath</span>
+        <small>Academy</small>
+      </div>
+      <nav class="nav-links">
+        <a href="#rooms">Rooms</a>
+        <a href="#how">How it works</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+      <div class="user-panel">
+        <button id="login-btn" class="ghost-btn">Sign in</button>
+        <div id="user-pill" class="user-pill hidden">
+          <span id="user-name"></span>
+          <span id="user-points"></span>
+          <button id="logout-btn" class="ghost-btn">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <h1>Learn cyber skills by completing hands-on rooms.</h1>
+          <p>
+            Join curated learning rooms, solve tasks, and earn points as you
+            advance through offensive and defensive tracks.
+          </p>
+          <div class="hero-actions">
+            <button id="hero-start" class="primary-btn">Start Learning</button>
+            <button id="hero-browse" class="ghost-btn">Browse Rooms</button>
+          </div>
+        </div>
+        <div class="hero-card">
+          <h2>Daily streak</h2>
+          <p>Complete at least one task per day to boost your rank.</p>
+          <div class="streak">
+            <span>🔥</span>
+            <strong>7 Day Streak</strong>
+          </div>
+          <div class="rank">
+            <div>
+              <small>Rank</small>
+              <strong>Apprentice</strong>
+            </div>
+            <div>
+              <small>Points</small>
+              <strong id="hero-points">0</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="rooms" class="rooms">
+        <div class="section-title">
+          <h2>Featured rooms</h2>
+          <p>Choose a room, complete tasks, and track your points.</p>
+        </div>
+        <div id="rooms-grid" class="rooms-grid"></div>
+      </section>
+
+      <section id="how" class="how">
+        <h2>How it works</h2>
+        <div class="steps">
+          <div class="step">
+            <h3>Pick a room</h3>
+            <p>Each room focuses on a practical topic with guided tasks.</p>
+          </div>
+          <div class="step">
+            <h3>Answer tasks</h3>
+            <p>Submit exact answers to earn points and unlock the next task.</p>
+          </div>
+          <div class="step">
+            <h3>Earn points</h3>
+            <p>Points accumulate to unlock ranks and prove your progress.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="login-modal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card">
+        <h2>Welcome back</h2>
+        <p>Sign in to save progress and earn points.</p>
+        <form id="login-form">
+          <label>
+            Display name
+            <input type="text" id="display-name" required />
+          </label>
+          <label>
+            Email
+            <input type="email" id="email" required />
+          </label>
+          <button class="primary-btn" type="submit">Continue</button>
+          <button class="ghost-btn" type="button" id="close-login">Cancel</button>
+        </form>
+      </div>
+    </div>
+
+    <template id="room-template">
+      <article class="room-card">
+        <div class="room-header">
+          <h3 class="room-title"></h3>
+          <span class="room-level"></span>
+        </div>
+        <p class="room-description"></p>
+        <div class="room-meta">
+          <span class="room-points"></span>
+          <span class="room-tasks"></span>
+        </div>
+        <div class="task-list"></div>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
