@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum CheckpointType {
+  MULTIPLE_CHOICE
+  TEXT
+}
+
+model User {
+  id                String                   @id @default(cuid())
+  email             String                   @unique
+  username          String
+  passwordHash      String
+  role              Role                     @default(USER)
+  createdAt         DateTime                 @default(now())
+  progress          UserProgress[]
+  checkpointAttempt UserCheckpointAttempt[]
+  modulesCreated    Module[]                 @relation("ModuleCreator")
+}
+
+model Module {
+  id          String       @id @default(cuid())
+  slug        String       @unique
+  title       String
+  description String
+  difficulty  Difficulty
+  tags        String[]
+  coverImage  String?
+  published   Boolean      @default(false)
+  createdById String
+  createdBy   User         @relation("ModuleCreator", fields: [createdById], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  pages       LessonPage[]
+  progress    UserProgress[]
+}
+
+model LessonPage {
+  id              String       @id @default(cuid())
+  moduleId        String
+  orderIndex      Int
+  title           String
+  markdownContent String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  module          Module       @relation(fields: [moduleId], references: [id])
+  checkpoints     Checkpoint[]
+
+  @@unique([moduleId, orderIndex])
+}
+
+model Checkpoint {
+  id           String          @id @default(cuid())
+  lessonPageId String
+  orderIndex   Int
+  type         CheckpointType
+  prompt       String
+  options      Json?
+  correctAnswer String
+  explanation  String?
+  lessonPage   LessonPage      @relation(fields: [lessonPageId], references: [id])
+  attempts     UserCheckpointAttempt[]
+
+  @@unique([lessonPageId, orderIndex])
+}
+
+model UserProgress {
+  id                   String   @id @default(cuid())
+  userId               String
+  moduleId             String
+  completedPages       Int      @default(0)
+  completedCheckpoints Int      @default(0)
+  isCompleted          Boolean  @default(false)
+  lastSeenAt           DateTime @default(now())
+  user                 User     @relation(fields: [userId], references: [id])
+  module               Module   @relation(fields: [moduleId], references: [id])
+
+  @@unique([userId, moduleId])
+}
+
+model UserCheckpointAttempt {
+  id              String     @id @default(cuid())
+  userId          String
+  checkpointId    String
+  submittedAnswer String
+  isCorrect       Boolean
+  createdAt       DateTime   @default(now())
+  user            User       @relation(fields: [userId], references: [id])
+  checkpoint      Checkpoint @relation(fields: [checkpointId], references: [id])
+}
