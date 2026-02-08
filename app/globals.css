@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+  --surface: #ffffff;
+  --accent: #0f766e;
+  --muted: #f8fafc;
+  --border: #e2e8f0;
+}
+
+.dark {
+  --surface: #0b1120;
+  --accent: #14b8a6;
+  --muted: #0f172a;
+  --border: #1e293b;
+}
+
+body {
+  @apply bg-surface text-slate-900 dark:text-slate-100 min-h-screen;
+}
+
+.prose pre {
+  @apply bg-slate-900 text-slate-100;
+}
+
+.prose img {
+  @apply rounded-lg border border-border;
+}
+
+.card {
+  @apply rounded-2xl border border-border bg-white/90 dark:bg-slate-900/80 shadow-sm;
+}
